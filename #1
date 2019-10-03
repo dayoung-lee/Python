@@ -1,4 +1,5 @@
 #print()
+
 >>> print()
 
 >>> print('Hello World')
@@ -7,3 +8,13 @@ Hello World
 1
 >>> print([1,2,3])
 [1, 2, 3]
+>>> print)1(
+	
+SyntaxError: invalid syntax
+>>> 
+>>> print(1,2)
+1 2
+>>> 
+>>> print('My name is', 'Dayoung Lee')
+My name is Dayoung Lee
+>>> 
