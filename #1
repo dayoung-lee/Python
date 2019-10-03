@@ -18,3 +18,42 @@ SyntaxError: invalid syntax
 >>> print('My name is', 'Dayoung Lee')
 My name is Dayoung Lee
 >>> 
+--------------------------------------------
+#input // Idel function. Different in Editor Mode
+
+>>> input()
+aaaaa
+'aaaaa'
+>>> input('Type your name.')
+Type your name.Dayoung Lee
+'Dayoung Lee'
+>>> input('Your age? :')
+Your age? :27
+'27'
+>>> age = input('Your age? : ')
+Your age? : 27
+>>> age
+'27'
+--------------------------------------------
+#Variable
+
+>>> my_int = 1
+>>> my_int + 3
+4
+>>> my_int * 100
+100
+>>> 
+>>> python = 1
+>>> PYTHON = 2
+>>> python
+1
+>>> PYTHON
+2
+>>> my int = 1
+SyntaxError: invalid syntax
+>>> my_int = 1
+>>> my_int 1
+SyntaxError: invalid syntax
+>>> my_int
+1
+>>> 
