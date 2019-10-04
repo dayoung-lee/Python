@@ -1,0 +1,132 @@
+# mysite : project name
+# edit something
+# polls : model name
+# _init_.py : marking directories on disk as a Python package directories.
+# admin.py : Django's command-line utility for administrative tasks.
+# model.py : It contains essential fields and behaviors of the data you're storing. database table.
+# views.py : It takes a web request and returns a web response. (HTML, redirect, 404 error, XML, image etc.
+============================================================================================================
+# Open 'cmd'
+============
+$ django-admin.py startproject mysite
+
+py manage.py migrate
+py manage.py runserver
+"http://127.0.0.1:8000" 
+--------------------------------------------
+[model]
+$ py manage.py startapp polls
+
+=================
+# open models.py
+=================
+from django.db import models
+
+# Create your models here.
+
+class Question(models.Model):
+    question_text = models.CharField(max_length = 200)
+    pub_date = models.DateTimeField('date published')
+
+class Choice(models.Model):
+    question = models.ForeignKey('Question',
+                                 on_delete=models.CASCADE,)
+    choice_text = models.CharField(max_length = 200)
+    votes = models.IntegerField(default = 0)
+
+==================================================
+# open settings.py and add polls in INSTALLED_APPS
+==================================================
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'polls',
+]
+
+$ py manage.py makemigrations polls
+$ py manage.py sqlmigrate polls 0001
+$ py manage.py migrate
+
+$ py manage.py shell
+>>> from polls.models import Question, Choice
+>>> Question.objects.all()
+<QuerySet[]>
+>>> from django.utils import timezone
+>>> q = Question(question_text = "What's new?", pub_date = timezone.now())
+>>> q.save()
+
+q?
+>>> q.id
+1
+>>> q.question_text
+"What's new?"
+>>> q.pub_date
+datetime.datetime(2019, 10, 4, 5, 15, 44, 36980, tzinfo=<UTC>)
+
+>>> Question.objects.all()
+<QuerySet [<Question: Question object (1)>]>
+=================================
+# add __str__ method in models.py
+=================================
+
+from django.db import models
+
+# Create your models here.
+
+class Question(models.Model):
+    def __str__(self):
+        return self.question_text
+    question_text = models.CharField(max_length = 200)
+    pub_date = models.DateTimeField('date published')
+
+class Choice(models.Model):
+    def __str__(self):
+        return self.choice_text
+    question = models.ForeignKey('Question',
+                                 on_delete=models.CASCADE,)
+    choice_text = models.CharField(max_length = 200)
+    votes = models.IntegerField(default = 0)
+
+$ py manage.py shell
+
+>>> from polls.models import Question, Choice
+>>> Question.objects.all()
+[QuerySet [<Question: What's new?>]>
+>>>
+>>> Question.objects.filter(id=1) 
+[QuerySet [<Question: What's new?>]>
+>>> Question.objects.filter(question_tedt__startswith = 'What')
+[QuerySet [<Question: What's new?>]>
+>>> from django.utils import timezone
+>>> current_year = timezone.now().year
+>>> Question.objects.get(pub_date__year = current_year)
+<Question: What's new?>
+>>>
+>>>
+>>> Question.objects.get(pk=1)
+<Question: What's new?>
+>>> q = Question.objects.get(pk=1)
+>>> q.choice_set.all()
+<QuerySet []>
+>>> q.choice_set.create(choice_text = 'Not much', votes = 0)
+<Choice: Not much>
+>>> q.choice_set.create(choice_text = 'The sky', votes = 0)
+<Choice: The sky>
+>>> c = q.choice_set.create(choice_text = 'Just hacking again', votes = 0)
+>>> q.choice_set.all()
+[<Choice: Not much>, <Choice: The sky>, <Just hacking again>]
+>>> q.choice_set.count()
+3
+>>> c =  q.choice_set.filter(choice_text__startswith='Just hacking')
+>>> c.delete()
+(1, {'polls.Choice': 1})
+>>> q.choice_set.all()
+<QuerySet [<Choice: Not much>, <Choice: The sky>]>
+
+
+
